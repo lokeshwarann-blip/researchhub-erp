@@ -71,7 +71,7 @@ with app.app_context():
             u = User(email=e, password_hash=generate_password_hash('Admin@123'), role='supervisor', status='Active')
             db.session.add(u)
             db.session.flush()
-            s = Supervisor(user_id=u.id, first_name=f, last_name=l, email=e, department=dept, designation=d, university='Anna University')
+            s = Supervisor(user_id=u.id, first_name=f, last_name=l, department=dept, designation=d, university='Anna University')
             db.session.add(s)
 
         # 3. SCHOLARS
@@ -83,7 +83,7 @@ with app.app_context():
             u = User(email=e, password_hash=generate_password_hash('Admin@123'), role='scholar', status='Active')
             db.session.add(u)
             db.session.flush()
-            s = Scholar(user_id=u.id, first_name=f, last_name=l, email=e, enrollment_id=en, department=dept, enroll_year=2024, university='Anna University')
+            s = Scholar(user_id=u.id, first_name=f, last_name=l, enrollment_id=en, department=dept, enroll_year=2024, university='Anna University')
             db.session.add(s)
 
         db.session.commit()
