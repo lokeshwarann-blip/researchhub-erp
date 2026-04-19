@@ -1,0 +1,22 @@
+# Python
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/researchhub.db
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# UI
+frontend/node_modules/
+temp_ui_updates_3/
+ResearchHub_fixed/
+{backend/
+scratch/
