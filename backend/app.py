@@ -19,12 +19,16 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# ── MySQL Config ──────────────────────────────────────────────────────────────
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    'mysql+mysqlconnector://root:root@localhost/researchhub'
-)
+# ── Database Config ───────────────────────────────────────────────────────────
+if os.environ.get('RENDER'):
+    # On Render, use SQLite for simplicity (free tier)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///researchhub.db'
+else:
+    # On Local, use MySQL
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost/researchhub'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'researchhub-secret-key-change-in-production'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-123')
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), 'uploads')
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
