@@ -15,6 +15,8 @@ from routes.admin import admin_bp
 from routes.attendance import attendance_bp
 from routes.notifications import notifications_bp
 import os
+from werkzeug.security import generate_password_hash
+from models import User
 
 app = Flask(__name__)
 CORS(app)
@@ -51,8 +53,43 @@ app.register_blueprint(notifications_bp,url_prefix='/api/notifications')
 
 # ── Create all tables on first run ───────────────────────────────────────────
 with app.app_context():
+    from models import Scholar, Supervisor
     db.create_all()
-    print("SUCCESS: All tables created successfully.")
+    
+    # Check if database is empty
+    if not User.query.filter_by(role='admin').first():
+        # 1. ADMIN
+        admin = User(email='admin@uni.edu', password_hash=generate_password_hash('Admin@123'), role='admin', status='Active')
+        db.session.add(admin)
+        
+        # 2. SUPERVISORS
+        su_data = [
+            ('Sarah', 'Johnson', 'sarah@uni.edu', 'Professor', 'CS'),
+            ('James', 'Miller', 'james@uni.edu', 'Asst. Professor', 'IT')
+        ]
+        for f, l, e, d, dept in su_data:
+            u = User(email=e, password_hash=generate_password_hash('Admin@123'), role='supervisor', status='Active')
+            db.session.add(u)
+            db.session.flush()
+            s = Supervisor(user_id=u.id, first_name=f, last_name=l, email=e, department=dept, designation=d, university='Anna University')
+            db.session.add(s)
+
+        # 3. SCHOLARS
+        sc_data = [
+            ('Elena', 'Vance', 'elena@uni.edu', 'RH2024001', 'CS'),
+            ('Marcus', 'Fenix', 'marcus@uni.edu', 'RH2024002', 'IT')
+        ]
+        for f, l, e, en, dept in sc_data:
+            u = User(email=e, password_hash=generate_password_hash('Admin@123'), role='scholar', status='Active')
+            db.session.add(u)
+            db.session.flush()
+            s = Scholar(user_id=u.id, first_name=f, last_name=l, email=e, enrollment_id=en, department=dept, enroll_year=2024, university='Anna University')
+            db.session.add(s)
+
+        db.session.commit()
+        print("SUCCESS: Full production dataset seeded.")
+
+    print("SUCCESS: Database initialized successfully.")
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
