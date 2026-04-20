@@ -170,10 +170,51 @@ def admin_approve_supervisor_request(req_id):
 # ─────────────────────────────────────────────────────────────────────────────
 @admin_bp.route('/growth-data', methods=['GET'])
 def admin_growth():
+    from datetime import datetime, timedelta
+    from collections import defaultdict
+    
+    # Get last 6 months labels
+    end_date = datetime.utcnow()
+    labels = []
+    for i in range(5, -1, -1):
+        m = (end_date.month - i - 1) % 12 + 1
+        y = end_date.year + (end_date.month - i - 1) // 12
+        labels.append(datetime(y, m, 1).strftime('%b'))
+
+    # Fetch users
+    users = User.query.filter(User.role.in_(['scholar', 'supervisor', 'faculty'])).all()
+    
+    scholar_counts = defaultdict(int)
+    faculty_counts = defaultdict(int)
+    
+    for u in users:
+        if not u.created_at: continue
+        month_label = u.created_at.strftime('%b')
+        if u.role == 'scholar':
+            scholar_counts[month_label] += 1
+        else:
+            faculty_counts[month_label] += 1
+
+    # Cumulative calculation (simplified for real data)
+    # Since we want total users AT that month, we need to know starting balance
+    # For this dashboard, we'll just show registrations per month if data is sparse, 
+    # but cumulative is better. Let's do cumulative registrations.
+    
+    s_data = []
+    f_data = []
+    s_acc = User.query.filter(User.role == 'scholar', User.created_at < (end_date - timedelta(days=180))).count()
+    f_acc = User.query.filter(User.role.in_(['supervisor', 'faculty']), User.created_at < (end_date - timedelta(days=180))).count()
+
+    for l in labels:
+        s_acc += scholar_counts[l]
+        f_acc += faculty_counts[l]
+        s_data.append(s_acc)
+        f_data.append(f_acc)
+
     return jsonify({
-        'labels'  : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-        'scholars': [24, 28, 35, 42, 50, 65, 78, 82, 90, 102],
-        'faculty' : [8, 10, 12, 12, 15, 18, 20, 22, 25, 28],
+        'labels'  : labels,
+        'scholars': s_data,
+        'faculty' : f_data,
     }), 200
 
 
