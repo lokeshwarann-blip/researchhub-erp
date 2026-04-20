@@ -121,7 +121,7 @@
                 </div>
                 <div class="stat-card" style="padding:1rem;">
                     <div class="stat-value" id="statOverdue" style="font-size:1.4rem; color:#ef4444">—</div>
-                    <div class="stat-label">Overdue</div>
+                    <div class="stat-label" id="statOverdueLabel">Overdue</div>
                 </div>
             </div>
 
@@ -318,12 +318,14 @@
       const overdue   = ALL_SCHOLARS.filter(s => (s.progress_pct || 0) < 20 && s.thesis_stage !== 'completed').length;
       const avgProg   = total ? Math.round(ALL_SCHOLARS.reduce((a, s) => a + (s.progress_pct || 0), 0) / total) : 0;
 
-      document.getElementById('statTotal').textContent     = total;
-      document.getElementById('statActive').textContent    = `${total} active`;
-      document.getElementById('statAvg').textContent       = `${avgProg}%`;
-      document.getElementById('statSubmitted').textContent = submitted;
-      document.getElementById('statOverdue').textContent   = overdue;
-      document.getElementById('statOverdueLabel').textContent = overdue > 0 ? 'Needs attention' : 'All on track';
+      if (document.getElementById('statTotal')) document.getElementById('statTotal').textContent = total;
+      if (document.getElementById('statActive')) document.getElementById('statActive').textContent = `${total} active`;
+      if (document.getElementById('statAvg')) document.getElementById('statAvg').textContent = `${avgProg}%`;
+      if (document.getElementById('statSubmitted')) document.getElementById('statSubmitted').textContent = submitted;
+      if (document.getElementById('statOverdue')) document.getElementById('statOverdue').textContent = overdue;
+      
+      const ovLabel = document.getElementById('statOverdueLabel');
+      if (ovLabel) ovLabel.textContent = overdue > 0 ? 'Needs attention' : 'All on track';
 
       renderScholars();
       populateScheduleDropdown();
