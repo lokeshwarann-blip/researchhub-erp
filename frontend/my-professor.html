@@ -176,7 +176,8 @@ async function confirmSchedule() {
             receiver_user_id: supervisorUserId,
             title,
             scheduled_at,
-            notes
+            notes,
+            sender_role: 'scholar'
         });
         toast('Meeting requested successfully!');
         closeMeetingModal();

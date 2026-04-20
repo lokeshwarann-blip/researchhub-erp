@@ -32,14 +32,26 @@ def schedule_meeting():
     
     # Logic: If sender is a faculty/supervisor, it's auto-scheduled. 
     # If sender is scholar, it's 'pending'.
+    scheduled_at = data.get('scheduled_at')
     sender_role = data.get('sender_role', 'scholar')
+    
+    # Robust date parsing
+    if scheduled_at:
+        scheduled_at = scheduled_at.replace(' ', 'T')
+        # If date is DD-MM-YYYY, try to flip it for ISO
+        import re
+        if re.match(r'^\d{2}-\d{2}-\d{4}', scheduled_at):
+            parts = scheduled_at.split('T')
+            dparts = parts[0].split('-')
+            scheduled_at = f"{dparts[2]}-{dparts[1]}-{dparts[0]}T{parts[1]}"
+    
     initial_status = 'scheduled' if sender_role in ['supervisor', 'faculty'] else 'pending'
     
     m = Meeting(
         scholar_id    = data['scholar_id'],
         supervisor_id = data['supervisor_id'],
         title         = data.get('title', 'Review Meeting'),
-        scheduled_at  = datetime.fromisoformat(data['scheduled_at']),
+        scheduled_at  = datetime.fromisoformat(scheduled_at),
         notes         = data.get('notes', ''),
         status        = initial_status,
     )
