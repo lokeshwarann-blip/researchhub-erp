@@ -270,7 +270,7 @@ async function loadNotifications(userId, isInitial = false) {
 }
 
 function updateNotifBadge(count) {
-    ['notifBadge', 'notifBadgeTop'].forEach(id => {
+    ['notifBadge', 'notifBadgeTop', 'sidebarNotifBadge'].forEach(id => {
         const b = document.getElementById(id);
         if (!b) return;
         if (count > 0) { b.style.display = 'flex'; b.textContent = count > 99 ? '99+' : count; }
