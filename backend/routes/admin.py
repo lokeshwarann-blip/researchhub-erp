@@ -225,8 +225,9 @@ def admin_growth():
 def admin_roles():
     scholars = Scholar.query.count()
     faculty  = Supervisor.query.count()
+    admins   = User.query.filter_by(role='admin').count()
     return jsonify({
-        'series': [scholars, faculty, 1],
+        'series': [scholars, faculty, admins],
         'labels': ['Scholars', 'Faculty', 'Admins'],
     }), 200
 
