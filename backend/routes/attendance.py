@@ -19,13 +19,41 @@ def get_attendance(scholar_id):
         q = q.filter(extract('month', Attendance.date) == month,
                      extract('year',  Attendance.date) == year)
     records = q.order_by(Attendance.date).all()
+    # Month Summary
     total   = len(records)
     present = sum(1 for r in records if r.status == 'present')
     absent  = sum(1 for r in records if r.status == 'absent')
     on_leave= sum(1 for r in records if r.status == 'leave')
+
+    # Overall Summary for Pie Chart
+    all_recs = Attendance.query.filter_by(scholar_id=scholar_id).all()
+    overall = {
+        'present': sum(1 for r in all_recs if r.status == 'present'),
+        'absent': sum(1 for r in all_recs if r.status == 'absent'),
+        'leave': sum(1 for r in all_recs if r.status == 'leave')
+    }
+
+    # Monthly Trend (Last 6 months)
+    from sqlalchemy import extract
+    import calendar
+    monthly_trend = []
+    today = date.today()
+    for i in range(5, -1, -1):
+        m = (today.month - i - 1) % 12 + 1
+        y = today.year + (today.month - i - 1) // 12
+        m_name = calendar.month_name[m][:3]
+        m_recs = Attendance.query.filter_by(scholar_id=scholar_id).filter(extract('month', Attendance.date) == m, extract('year', Attendance.date) == y).all()
+        monthly_trend.append({
+            'label': m_name,
+            'present': sum(1 for r in m_recs if r.status == 'present'),
+            'absent': sum(1 for r in m_recs if r.status == 'absent')
+        })
+
     return jsonify({
         'records' : [r.to_dict() for r in records],
         'summary' : {'total': total, 'present': present, 'absent': absent, 'leave': on_leave},
+        'overall' : overall,
+        'monthly' : monthly_trend,
         'pct'     : round(present / total * 100) if total else 0,
     }), 200
 

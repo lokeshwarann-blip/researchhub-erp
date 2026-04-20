@@ -13,7 +13,6 @@ const SCHOLAR_NAV = [
     { href: 'leaverequest.html',      icon: 'fa-calendar-alt',       label: 'Leave Request' },
     { href: 'attendance.html',        icon: 'fa-calendar-check',     label: 'Attendance' },
     { href: 'documents.html',         icon: 'fa-folder-open',        label: 'Documents' },
-    { href: 'stipend.html',           icon: 'fa-rupee-sign',         label: 'Stipend' },
     { href: 'messages.html',          icon: 'fa-envelope',           label: 'Messages', badge: 'msg' },
     { href: 'profile.html',           icon: 'fa-user-circle',        label: 'Profile' },
 ];
