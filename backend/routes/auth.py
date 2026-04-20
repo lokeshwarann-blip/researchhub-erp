@@ -213,6 +213,7 @@ def get_user_profile(user_id):
 
             profile.update({
                 'name': f"{s.first_name} {s.last_name}".strip(),
+                'scholar_id': s.id,
                 'department': s.department,
                 'phone': s.phone,
                 'gender': s.gender,
@@ -237,6 +238,7 @@ def get_user_profile(user_id):
 
             profile.update({
                 'name': f"Dr. {s.first_name} {s.last_name}".strip(),
+                'supervisor_id': s.id,
                 'department': s.department,
                 'phone': s.phone,
                 'gender': getattr(s, 'gender', ''),
