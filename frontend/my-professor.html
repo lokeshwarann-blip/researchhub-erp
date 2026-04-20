@@ -73,17 +73,43 @@ function renderSupervisor(s) {
     const sec = document.getElementById('supervisorContent');
     if (s.supervisor_id && s.supervisor_name) {
         const initials = s.supervisor_name.replace('Dr. ','').split(' ').map(n=>n[0]).join('').toUpperCase();
+        
+        // Dynamic Tags (Mocked for premium feel)
+        const tags = ['Advanced AI', 'Research Methodology', 'Deep Learning', 'System Architecture'];
+        const tagsHTML = tags.map(t => `<span style="background:rgba(0,212,255,0.08);color:var(--primary);font-size:0.7rem;padding:0.3rem 0.7rem;border-radius:100px;font-weight:600;margin-right:0.4rem;border:1px solid rgba(0,212,255,0.15)">${t}</span>`).join('');
+
         sec.innerHTML = `
-        <div style="display:flex;align-items:center;gap:2rem;flex-wrap:wrap">
-            <div class="avatar-circle" style="width:80px;height:80px;font-size:1.75rem">${initials}</div>
-            <div style="flex:1">
-                <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:0.25rem">${s.supervisor_name}</h2>
-                <p style="color:var(--primary);font-weight:600;margin-bottom:0.25rem">Professor & Supervisor</p>
-                <p style="color:var(--text-muted);font-size:0.9rem">${s.supervisor_dept || 'Research University'}</p>
+        <div style="display:flex; gap:2.5rem; flex-wrap:wrap">
+            <!-- Left: Avatar & Main Info -->
+            <div style="display:flex; align-items:center; gap:1.5rem; flex:1; min-width:300px;">
+                <div class="avatar-circle" style="width:100px;height:100px;font-size:2.2rem; flex-shrink:0">${initials}</div>
+                <div>
+                    <h2 style="font-size:1.6rem;font-weight:700;margin-bottom:0.25rem">${s.supervisor_name}</h2>
+                    <p style="color:var(--primary);font-weight:600;margin-bottom:0.4rem; font-size:0.95rem">Senior Research Supervisor</p>
+                    <p style="color:var(--text-muted);font-size:0.85rem; margin-bottom:1rem"><i class="fas fa-university" style="margin-right:0.4rem"></i>${s.supervisor_dept || 'Department of Computer Science'}</p>
+                    <div style="display:flex; flex-wrap:wrap; gap:0.25rem">
+                        ${tagsHTML}
+                    </div>
+                </div>
             </div>
-            <a href="messages.html" class="btn-auth" style="width:auto;padding:0.7rem 1.5rem">
-                <i class="fas fa-envelope" style="margin-right:0.5rem"></i> Send Message
-            </a>
+
+            <!-- Right: Office Info & Actions -->
+            <div style="flex:1; min-width:300px; border-left:1px solid var(--border); padding-left:2.5rem; display:grid; grid-template-columns: 1fr 1fr; gap:1rem">
+                <div>
+                    <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; letter-spacing:0.05rem; margin-bottom:0.5rem">Office Information</div>
+                    <p style="font-size:0.88rem; margin-bottom:0.4rem"><i class="fas fa-door-open" style="width:18px; color:var(--primary)"></i> Room 402, Block B</p>
+                    <p style="font-size:0.88rem; margin-bottom:0.4rem"><i class="fas fa-clock" style="width:18px; color:var(--primary)"></i> Mon/Wed: 2PM - 4PM</p>
+                    <p style="font-size:0.88rem;"><i class="fas fa-envelope" style="width:18px; color:var(--primary)"></i> prof.${initials.toLowerCase()}@univ.edu</p>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:0.6rem; justify-content:center">
+                    <a href="messages.html" class="btn-auth" style="width:100%; padding:0.65rem; font-size:0.85rem; border-radius:10px">
+                        <i class="fas fa-comment-dots" style="margin-right:0.5rem"></i> Message Faculty
+                    </a>
+                    <button class="btn-auth" style="width:100%; padding:0.65rem; font-size:0.85rem; border-radius:10px; background:rgba(255,255,255,0.05); border-color:var(--border); color:#fff" onclick="toast('Meeting booking coming soon!')">
+                        <i class="fas fa-calendar-check" style="margin-right:0.5rem"></i> Book a Slot
+                    </button>
+                </div>
+            </div>
         </div>`;
     } else {
         sec.innerHTML = `<div class="empty-state"><i class="fas fa-user-clock" style="font-size:2.5rem;opacity:0.2;margin-bottom:1rem;display:block"></i>No supervisor assigned yet. Request one below.</div>`;

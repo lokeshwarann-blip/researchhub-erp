@@ -27,6 +27,7 @@ def get_supervisor_meetings(supervisor_id):
 
 @meetings_bp.route('/', methods=['POST'])
 def schedule_meeting():
+    from routes.notifications import push_notification
     data = request.get_json()
     m = Meeting(
         scholar_id    = data['scholar_id'],
@@ -37,6 +38,16 @@ def schedule_meeting():
         status        = 'scheduled',
     )
     db.session.add(m)
+    db.session.flush()
+
+    # Notify Supervisor
+    push_notification(
+        user_id    = data['receiver_user_id'], # We need to pass the user_id of the supervisor
+        message    = f"🗓️ New meeting scheduled: {m.title}",
+        notif_type = 'meeting',
+        related_id = m.id
+    )
+
     db.session.commit()
     return jsonify({'message': 'Meeting scheduled', 'id': m.id}), 201
 
