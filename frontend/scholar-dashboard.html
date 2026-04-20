@@ -17,109 +17,109 @@
         <!-- MAIN CONTENT -->
         <main class="main-wrapper">
             <div class="content-body animate-in">
-                <div class="header-row">
+                <!-- HEADER -->
+                <div class="header-row" style="margin-bottom: 2rem;">
                     <div>
-                        <h1 class="page-title">Good evening, <span id="welcomeName" class="text-gradient">Prem</span>! 👋</h1>
-                        <p class="page-sub" id="headerContext">Wednesday, March 25, 2026 &middot; Supervisor: Dr. Lakshmi Iyer</p>
-                    </div>
-                    <div class="top-actions" id="top-notif-container">
-                        <!-- Bell icon from nav.js -->
+                        <h1 class="page-title">Good evening, <span id="welcomeName" class="text-gradient">...</span>! 👋</h1>
+                        <p class="page-sub" id="headerContext">Loading supervisor info...</p>
                     </div>
                 </div>
 
-                <!-- STATS GRID (REFINED AS PER SCREENSHOT) -->
-                <div class="stats-grid">
-                    <div class="card-stat">
-                        <div class="cs-icon" style="background: rgba(0, 242, 255, 0.1); color: var(--primary);"><i class="fas fa-chart-pie"></i></div>
-                        <div class="cs-val" id="overallProgress">0%</div>
-                        <div class="cs-label">Overall progress</div>
-                        <div class="cs-tag blue">Year 1 of 5</div>
-                    </div>
-                    <div class="card-stat">
-                        <div class="cs-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;"><i class="fas fa-check-square"></i></div>
-                        <div class="cs-val" id="milestonesCount">0/0</div>
-                        <div class="cs-label">Milestones done</div>
-                        <div class="cs-tag orange">0 upcoming</div>
-                    </div>
-                    <div class="card-stat">
-                        <div class="cs-icon" style="background: rgba(34, 197, 94, 0.1); color: #22c55e;"><i class="fas fa-book"></i></div>
-                        <div class="cs-val" id="publicationsCount">0</div>
-                        <div class="cs-label">Publications</div>
-                        <div class="cs-tag green">0 under review</div>
-                    </div>
-                    <div class="card-stat">
-                        <div class="cs-icon" style="background: rgba(139, 92, 246, 0.1); color: #a78bfa;"><i class="fas fa-calendar-check"></i></div>
-                        <div class="cs-val" id="attendanceRate">0%</div>
-                        <div class="cs-label">Attendance rate</div>
-                        <div class="cs-tag purple" id="attendanceTag">On track</div>
-                    </div>
-                </div>
+                <div style="display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start;">
+                    
+                    <!-- LEFT COLUMN -->
+                    <div class="dash-main-col">
+                        <!-- STATS GRID -->
+                        <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 2rem;">
+                            <div class="card-stat">
+                                <div class="cs-icon" style="background: rgba(0, 242, 255, 0.1); color: var(--primary);"><i class="fas fa-chart-pie"></i></div>
+                                <div class="cs-val" id="overallProgress">0%</div>
+                                <div class="cs-label">Overall progress</div>
+                                <div class="cs-tag blue">Live data</div>
+                            </div>
+                            <div class="card-stat">
+                                <div class="cs-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;"><i class="fas fa-check-square"></i></div>
+                                <div class="cs-val" id="milestonesCount">0/0</div>
+                                <div class="cs-label">Milestones</div>
+                                <div class="cs-tag orange">Upcoming</div>
+                            </div>
+                            <div class="card-stat">
+                                <div class="cs-icon" style="background: rgba(139, 92, 246, 0.1); color: #a78bfa;"><i class="fas fa-calendar-check"></i></div>
+                                <div class="cs-val" id="attendanceRate">0%</div>
+                                <div class="cs-label">Attendance</div>
+                                <div class="cs-tag purple" id="attendanceTag">On track</div>
+                            </div>
+                        </div>
 
-                <!-- THESIS JOURNEY (EXAPNDED) -->
-                <div class="panel" style="margin-bottom: 2rem; background: #0b0c10; border: 1px solid rgba(255,255,255,0.03);">
-                    <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                        <h3 style="font-size: 1rem; font-weight: 600;">Thesis journey</h3>
-                        <span id="journeyPercent" style="font-size: 0.85rem; opacity:0.6;">0% complete</span>
-                    </div>
-                    <div class="journey-track" style="height: 4px; background: rgba(255,255,255,0.05); margin: 1.5rem 0; border-radius: 2px;">
-                        <div class="journey-fill" id="pbFill" style="width: 0%; height: 100%; background: #0ea5e9; border-radius: 2px;"></div>
-                    </div>
-                    <div class="journey-steps" style="display: flex; justify-content: space-between;">
-                        <div class="j-step active">
-                            <div class="j-label" style="font-size: 0.75rem; color: #f59e0b; font-weight: 600;">Coursework &rarr;</div>
+                        <!-- THESIS JOURNEY -->
+                        <div class="panel" style="margin-bottom: 2rem; background: #0b0c10; border: 1px solid rgba(255,255,255,0.03);">
+                            <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                <h3 style="font-size: 1rem; font-weight: 600;">Thesis journey</h3>
+                                <span id="journeyPercent" style="font-size: 0.85rem; opacity:0.6;">0% complete</span>
+                            </div>
+                            <div class="journey-track" style="height: 4px; background: rgba(255,255,255,0.05); margin: 1.5rem 0; border-radius: 2px;">
+                                <div class="journey-fill" id="pbFill" style="width: 0%; height: 100%; background: #0ea5e9; border-radius: 2px;"></div>
+                            </div>
+                            <div class="journey-steps" style="display: flex; justify-content: space-between;">
+                                <div class="j-step"><div class="j-label" style="font-size: 0.75rem;">Coursework</div></div>
+                                <div class="j-step"><div class="j-label" style="font-size: 0.75rem;">Proposal</div></div>
+                                <div class="j-step"><div class="j-label" style="font-size: 0.75rem;">Synopsis</div></div>
+                                <div class="j-step"><div class="j-label" style="font-size: 0.75rem;">Seminar</div></div>
+                                <div class="j-step"><div class="j-label" style="font-size: 0.75rem;">Submission</div></div>
+                            </div>
                         </div>
-                        <div class="j-step">
-                            <div class="j-label" style="font-size: 0.75rem; opacity: 0.5;">Proposal</div>
-                        </div>
-                        <div class="j-step">
-                            <div class="j-label" style="font-size: 0.75rem; opacity: 0.5;">Synopsis</div>
-                        </div>
-                        <div class="j-step">
-                            <div class="j-label" style="font-size: 0.75rem; opacity: 0.5;">Seminar</div>
-                        </div>
-                        <div class="j-step">
-                            <div class="j-label" style="font-size: 0.75rem; opacity: 0.5;">Submission</div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- CHARTS GRID -->
-                <div class="dash-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
-                    <div class="panel" style="background: #0b0c10; border: 1px solid rgba(255,255,255,0.03);">
-                        <div class="panel-header" style="margin-bottom: 1rem;">
-                            <h3 style="font-size: 1rem; font-weight: 600;">Monthly Attendance</h3>
+                        <!-- CHARTS GRID -->
+                        <div class="dash-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                            <div class="panel" style="background: #0b0c10; border: 1px solid rgba(255,255,255,0.03);">
+                                <div class="panel-header" style="margin-bottom: 1rem;"><h3 style="font-size: 0.9rem;">Monthly Attendance</h3></div>
+                                <div id="attendanceTrendChart"></div>
+                            </div>
+                            <div class="panel" style="background: #0b0c10; border: 1px solid rgba(255,255,255,0.03);">
+                                <div class="panel-header" style="margin-bottom: 1rem;"><h3 style="font-size: 0.9rem;">Milestone Status</h3></div>
+                                <div id="barChart"></div>
+                            </div>
                         </div>
-                        <div id="attendanceTrendChart"></div>
-                    </div>
-                    <div class="panel" style="background: #0b0c10; border: 1px solid rgba(255,255,255,0.03);">
-                        <div class="panel-header" style="margin-bottom: 1rem;">
-                            <h3 style="font-size: 1rem; font-weight: 600;">Milestone Status</h3>
-                        </div>
-                        <div id="barChart"></div>
-                    </div>
-                </div>
 
-                <!-- BOTTOM GRID -->
-                <div class="dash-grid" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem;">
-                    <div class="panel" style="background: #0b0c10; border: 1px solid rgba(255,255,255,0.03);">
-                        <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                            <h3 style="font-size: 1rem; font-weight: 600;">Recent Activity</h3>
-                            <i class="fas fa-history" style="opacity: 0.4;"></i>
-                        </div>
-                        <div id="activityLog" style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 4rem 1rem; opacity: 0.3;">
-                            <i class="fas fa-bars" style="font-size: 1.25rem; margin-bottom: 0.8rem;"></i>
-                            <p style="font-size: 0.85rem;">No recent activity</p>
+                        <!-- RECENT Activity -->
+                        <div class="panel" style="background: #0b0c10; border: 1px solid rgba(255,255,255,0.03);">
+                            <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                                <h3 style="font-size: 1rem; font-weight: 600;">Recent Activity</h3>
+                                <i class="fas fa-history" style="opacity: 0.4;"></i>
+                            </div>
+                            <div id="activityLog" style="display:flex; flex-direction:column; gap:0.75rem;"></div>
                         </div>
                     </div>
 
-                    <div class="panel" style="background: #0b0c10; border: 1px solid rgba(255,255,255,0.03);">
-                        <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                            <h3 style="font-size: 1rem; font-weight: 600;">Upcoming Meetings</h3>
-                            <a href="#" class="panel-link" style="font-size: 0.8rem; color: #38bdf8;">Calendar &rarr;</a>
-                        </div>
-                        <div id="meetingsList" style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 4rem 1rem; opacity: 0.3;">
-                            <i class="fas fa-calendar-alt" style="font-size: 1.25rem; margin-bottom: 0.8rem; color: #22d3ee;"></i>
-                            <p style="font-size: 0.85rem;">No upcoming meetings</p>
+                    <!-- RIGHT COLUMN: SCHEDULING & MEETINGS -->
+                    <div class="dash-side-col">
+                        <!-- Scheduling Panel -->
+                        <div class="panel" style="margin-bottom: 1.5rem; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; position: sticky; top: 20px;">
+                            <h3 style="margin-top: 0; font-size: 1rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem;">
+                                <i class="fas fa-calendar-plus" style="color: var(--primary);"></i> Request Meeting
+                            </h3>
+                            
+                            <div class="input-group" style="margin-bottom: 1.25rem;">
+                                <label style="display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.5rem;">Title / Purpose</label>
+                                <input type="text" id="meetTitle" placeholder="e.g. Thesis Review" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); border-radius: 8px; color: #fff; padding: 0.7rem; font-size: 0.85rem; outline: none;">
+                            </div>
+
+                            <div class="input-group" style="margin-bottom: 1.5rem;">
+                                <label style="display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.5rem;">Date & Time</label>
+                                <input type="datetime-local" id="meetDate" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); border-radius: 8px; color: #fff; padding: 0.7rem; font-size: 0.85rem; outline: none; color-scheme: dark;">
+                            </div>
+
+                            <button onclick="scheduleMeeting()" style="width: 100%; padding: 0.9rem; background: var(--primary); color: #000; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                <i class="fas fa-paper-plane"></i> Send Request
+                            </button>
+
+                            <!-- Mini Upcoming List -->
+                            <div style="margin-top: 2rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem;">
+                                <h4 style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem; text-transform: uppercase;">Upcoming Meetings</h4>
+                                <div id="meetingsList" style="display: flex; flex-direction: column; gap: 0.85rem;">
+                                    <div style="font-size: 0.75rem; color: var(--text-muted); opacity: 0.6; text-align: center;">No meetings soon</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -304,7 +304,8 @@
                 sender_role: 'scholar'
             });
             alert("Meeting request sent to your supervisor for approval!");
-            closeModal('meetingModal');
+            document.getElementById('meetTitle').value = '';
+            document.getElementById('meetDate').value = '';
             loadData();
         } catch(e) { 
             console.error(e);
