@@ -29,27 +29,63 @@ def get_supervisor_meetings(supervisor_id):
 def schedule_meeting():
     from routes.notifications import push_notification
     data = request.get_json()
+    
+    # Logic: If sender is a faculty/supervisor, it's auto-scheduled. 
+    # If sender is scholar, it's 'pending'.
+    sender_role = data.get('sender_role', 'scholar')
+    initial_status = 'scheduled' if sender_role in ['supervisor', 'faculty'] else 'pending'
+    
     m = Meeting(
         scholar_id    = data['scholar_id'],
         supervisor_id = data['supervisor_id'],
         title         = data.get('title', 'Review Meeting'),
         scheduled_at  = datetime.fromisoformat(data['scheduled_at']),
         notes         = data.get('notes', ''),
-        status        = 'scheduled',
+        status        = initial_status,
     )
     db.session.add(m)
     db.session.flush()
 
-    # Notify Supervisor
+    # Notify Receiver
+    msg = f"🗓️ New mandatory meeting scheduled: {m.title}" if initial_status == 'scheduled' else f"📩 New meeting request: {m.title}"
     push_notification(
-        user_id    = data['receiver_user_id'], # We need to pass the user_id of the supervisor
-        message    = f"🗓️ New meeting scheduled: {m.title}",
+        user_id    = data['receiver_user_id'],
+        message    = msg,
         notif_type = 'meeting',
         related_id = m.id
     )
 
     db.session.commit()
-    return jsonify({'message': 'Meeting scheduled', 'id': m.id}), 201
+    return jsonify({'message': 'Meeting created', 'id': m.id, 'status': initial_status}), 201
+
+
+@meetings_bp.route('/<int:meeting_id>/respond', methods=['PUT'])
+def respond_meeting(meeting_id):
+    from routes.notifications import push_notification
+    m = Meeting.query.get_or_404(meeting_id)
+    data = request.get_json()
+    action = data.get('action') # 'accept' or 'decline'
+    
+    if action == 'accept':
+        m.status = 'scheduled'
+        msg = f"✅ Meeting Accepted: {m.title}"
+    else:
+        m.status = 'rejected'
+        msg = f"❌ Meeting Declined: {m.title}"
+        
+    # Notify Scholar
+    from models import Scholar
+    s = Scholar.query.get(m.scholar_id)
+    if s:
+        push_notification(
+            user_id = s.user_id,
+            message = msg,
+            notif_type = 'meeting',
+            related_id = m.id
+        )
+        
+    db.session.commit()
+    return jsonify({'message': f'Meeting {m.status}'})
 
 
 @meetings_bp.route('/<int:meeting_id>', methods=['PUT'])
