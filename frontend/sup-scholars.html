@@ -95,97 +95,59 @@
       <p class="page-sub">Track progress, view profiles and manage all your assigned scholars</p>
     </div>
 
-    <!-- TWO COLUMN LAYOUT CONTENT -->
-    <div style="display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start;">
-        
-        <!-- LEFT: SCHOLARS GRID -->
-        <div class="scholars-main-col">
-            <!-- Stats -->
-            <div class="stats-grid" style="margin-bottom:1.5rem">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
-                    <div class="stat-value" id="statTotal">—</div>
-                    <div class="stat-label">Total scholars</div>
-                    <div><span class="stat-sb sb-green" id="statActive">—</span></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="color:#22c55e"><i class="fas fa-chart-line"></i></div>
-                    <div class="stat-value" id="statAvg">—</div>
-                    <div class="stat-label">Avg. progress</div>
-                    <div><span class="stat-sb sb-green">Live data</span></div>
-                </div>
-                <!-- Mini cards for better layout -->
-                <div class="stat-card" style="padding:1rem;">
-                    <div class="stat-value" id="statSubmitted" style="font-size:1.4rem">—</div>
-                    <div class="stat-label">Submitted</div>
-                </div>
-                <div class="stat-card" style="padding:1rem;">
-                    <div class="stat-value" id="statOverdue" style="font-size:1.4rem; color:#ef4444">—</div>
-                    <div class="stat-label" id="statOverdueLabel">Overdue</div>
-                </div>
-            </div>
-
-            <!-- ─── Pending Student Requests ─── -->
-            <div class="pending-requests-card" id="pendingRequestsCard" style="display:none; margin-bottom:1.5rem">
-                <div class="prc-header">
-                <h3><i class="fas fa-user-clock"></i> Pending Requests</h3>
-                <span class="prc-count" id="prcCount">0 pending</span>
-                </div>
-                <div id="pendingRequestsList"></div>
-            </div>
-
-            <!-- Filters -->
-            <div class="filter-bar">
-                <button class="filter-pill active" onclick="filterScholars('all',this)">All</button>
-                <button class="filter-pill" onclick="filterScholars('ontrack',this)">On track</button>
-                <button class="filter-pill" onclick="filterScholars('overdue',this)">Overdue</button>
-                <div class="search-box">
-                    <i class="fas fa-search" style="color:var(--text-muted);font-size:0.8rem"></i>
-                    <input type="text" placeholder="Search..." id="searchInput" oninput="searchScholars(this.value)">
-                </div>
-            </div>
-
-            <!-- Scholar cards -->
-            <div class="scholar-grid" id="scholarGrid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));"></div>
-        </div>
-
-        <!-- RIGHT: SCHEDULING PANEL -->
-        <div class="scheduling-side-panel">
-            <div class="panel" style="padding: 1.5rem; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; position: sticky; top: 20px;">
-                <h3 style="margin-top: 0; font-size: 1rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem;">
-                    <i class="fas fa-calendar-plus" style="color: var(--primary);"></i> Schedule Meeting
-                </h3>
-                
-                <div class="input-group" style="margin-bottom: 1.25rem;">
-                    <label style="display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.5rem;">Select Scholar</label>
-                    <select id="scheduleScholarSelect" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); border-radius: 8px; color: #fff; padding: 0.7rem; font-size: 0.85rem; outline: none;">
-                        <option value="">Choose a scholar...</option>
-                    </select>
-                </div>
-
-                <div class="input-group" style="margin-bottom: 1.25rem;">
-                    <label style="display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.5rem;">Title / Purpose</label>
-                    <input type="text" id="scheduleTitle" placeholder="e.g. Monthly Review" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); border-radius: 8px; color: #fff; padding: 0.7rem; font-size: 0.85rem; outline: none;">
-                </div>
-
-                <div class="input-group" style="margin-bottom: 1.5rem;">
-                    <label style="display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.5rem;">Date & Time</label>
-                    <input type="datetime-local" id="scheduleDateTime" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); border-radius: 8px; color: #fff; padding: 0.7rem; font-size: 0.85rem; outline: none; color-scheme: dark;">
-                </div>
-
-                <button onclick="quickSchedule()" style="width: 100%; padding: 0.9rem; background: var(--primary); color: #000; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: transform 0.2s;">
-                    <i class="fas fa-paper-plane"></i> Schedule Mandatory
-                </button>
-
-                <div style="margin-top: 2rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem;">
-                    <h4 style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px;">Meeting History</h4>
-                    <div id="sideUpcomingList" style="display: flex; flex-direction: column; gap: 0.85rem; max-height: 300px; overflow-y: auto; padding-right: 5px;">
-                        <div style="font-size: 0.75rem; color: var(--text-muted); opacity: 0.6; text-align: center;">No history yet</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Stats -->
+    <div class="stats-grid" style="margin-bottom:1.5rem">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+        <div class="stat-value" id="statTotal">—</div>
+        <div class="stat-label">Total scholars</div>
+        <div><span class="stat-sb sb-green" id="statActive">—</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="color:#22c55e"><i class="fas fa-chart-line"></i></div>
+        <div class="stat-value" id="statAvg">—</div>
+        <div class="stat-label">Avg. progress</div>
+        <div><span class="stat-sb sb-green">Live data</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="color:#f59e0b"><i class="fas fa-clock"></i></div>
+        <div class="stat-value" id="statSubmitted">—</div>
+        <div class="stat-label">Submitted thesis</div>
+        <div><span class="stat-sb sb-blue">Completed</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="color:#ef4444"><i class="fas fa-exclamation-circle"></i></div>
+        <div class="stat-value" id="statOverdue">—</div>
+        <div class="stat-label">Overdue</div>
+        <div><span class="stat-sb sb-red" id="statOverdueLabel">—</span></div>
+      </div>
     </div>
+
+    <!-- ─── Pending Student Requests ─── -->
+    <div class="pending-requests-card" id="pendingRequestsCard" style="display:none;">
+      <div class="prc-header">
+        <h3><i class="fas fa-user-clock"></i> Pending Student Requests</h3>
+        <span class="prc-count" id="prcCount">0 pending</span>
+      </div>
+      <div id="pendingRequestsList">
+        <div class="prc-loading"><i class="fas fa-spinner fa-spin"></i> Loading requests…</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-bar">
+      <button class="filter-pill active" onclick="filterScholars('all',this)">All</button>
+      <button class="filter-pill" onclick="filterScholars('ontrack',this)">On track</button>
+      <button class="filter-pill" onclick="filterScholars('overdue',this)">Overdue</button>
+      <button class="filter-pill" onclick="filterScholars('submitted',this)">Submitted</button>
+      <div class="search-box">
+        <i class="fas fa-search" style="color:var(--text-muted);font-size:0.8rem"></i>
+        <input type="text" placeholder="Search scholars…" id="searchInput" oninput="searchScholars(this.value)">
+      </div>
+    </div>
+
+    <!-- Scholar cards -->
+    <div class="scholar-grid" id="scholarGrid"></div>
     </div>
   </main>
 </div>
@@ -318,109 +280,15 @@
       const overdue   = ALL_SCHOLARS.filter(s => (s.progress_pct || 0) < 20 && s.thesis_stage !== 'completed').length;
       const avgProg   = total ? Math.round(ALL_SCHOLARS.reduce((a, s) => a + (s.progress_pct || 0), 0) / total) : 0;
 
-      if (document.getElementById('statTotal')) document.getElementById('statTotal').textContent = total;
-      if (document.getElementById('statActive')) document.getElementById('statActive').textContent = `${total} active`;
-      if (document.getElementById('statAvg')) document.getElementById('statAvg').textContent = `${avgProg}%`;
-      if (document.getElementById('statSubmitted')) document.getElementById('statSubmitted').textContent = submitted;
-      if (document.getElementById('statOverdue')) document.getElementById('statOverdue').textContent = overdue;
-      
-      const ovLabel = document.getElementById('statOverdueLabel');
-      if (ovLabel) ovLabel.textContent = overdue > 0 ? 'Needs attention' : 'All on track';
+      document.getElementById('statTotal').textContent     = total;
+      document.getElementById('statActive').textContent    = `${total} active`;
+      document.getElementById('statAvg').textContent       = `${avgProg}%`;
+      document.getElementById('statSubmitted').textContent = submitted;
+      document.getElementById('statOverdue').textContent   = overdue;
+      document.getElementById('statOverdueLabel').textContent = overdue > 0 ? 'Needs attention' : 'All on track';
 
       renderScholars();
-      populateScheduleDropdown();
-      loadSideMeetings();
     } catch(e) { console.error('loadScholars error:', e); }
-  }
-
-  function populateScheduleDropdown() {
-      const select = document.getElementById('scheduleScholarSelect');
-      if (!select) return;
-      select.innerHTML = '<option value="">Choose a scholar...</option>' + 
-          ALL_SCHOLARS.map(s => `<option value="${s.id}" data-uid="${s.user_id}">${s.name}</option>`).join('');
-  }
-
-  async function loadSideMeetings() {
-      const list = document.getElementById('sideUpcomingList');
-      if (!list) return;
-      try {
-          const svId = await resolveSupervisorId();
-          const mRaw = await apiGet(`/meetings/supervisor/${svId}`);
-          if (!Array.isArray(mRaw)) return;
-          
-          const meetings = mRaw.sort((a,b) => new Date(b.scheduled_at) - new Date(a.scheduled_at));
-
-          if (meetings.length > 0) {
-              list.innerHTML = meetings.map(m => {
-                  const sColor = m.status === 'scheduled' ? 'var(--primary)' : m.status === 'completed' ? '#22c55e' : (m.status === 'pending' ? '#f59e0b' : '#94a3b8');
-                  const isPending = m.status === 'pending';
-                  
-                  return `
-                    <div style="padding:0.75rem; background:rgba(255,255,255,0.03); border-radius:12px; border:1px solid var(--glass-border); margin-bottom:0.5rem">
-                        <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:0.4rem">
-                            <div style="font-size:0.85rem; font-weight:700; color:#fff">${m.title}</div>
-                            <span style="font-size:0.6rem; text-transform:uppercase; color:${sColor}; font-weight:800; border:1px solid ${sColor}44; padding:2px 6px; border-radius:6px; background:${sColor}08">${m.status}</span>
-                        </div>
-                        <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.4rem">w/ ${m.scholar_name || 'Scholar'}</div>
-                        <div style="display:flex; flex-wrap:wrap; gap:0.8rem; font-size:0.68rem; color:var(--text-muted); opacity:0.8; margin-bottom: ${isPending ? '0.85rem' : '0'}">
-                            <span><i class="fas fa-calendar-day" style="margin-right:0.3rem; color:var(--primary)"></i>${new Date(m.scheduled_at).toLocaleDateString('en-IN', {day:'numeric', month:'short'})}</span>
-                            <span><i class="fas fa-clock" style="margin-right:0.3rem; color:var(--primary)"></i>${new Date(m.scheduled_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>
-                        </div>
-                        ${isPending ? `
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; margin-top:0.25rem">
-                            <button onclick="respondMeeting(${m.id}, 'accept')" style="padding:0.45rem; border-radius:8px; border:none; background:#22c55e; color:#fff; font-size:0.7rem; font-weight:700; cursor:pointer"><i class="fas fa-check"></i> Accept</button>
-                            <button onclick="respondMeeting(${m.id}, 'decline')" style="padding:0.45rem; border-radius:8px; border:1px solid #ef4444; background:transparent; color:#ef4444; font-size:0.7rem; font-weight:700; cursor:pointer"><i class="fas fa-times"></i> Decline</button>
-                        </div>
-                        ` : ''}
-                    </div>
-                  `;
-              }).join('');
-          }
-      } catch(e) { console.error("Side meetings error:", e); }
-  }
-
-  async function respondMeeting(id, action) {
-      try {
-          await apiPut(`/meetings/${id}/respond`, { action });
-          toast(`Meeting ${action === 'accept' ? 'confirmed' : 'declined'}`);
-          loadSideMeetings();
-      } catch(e) {
-          toast("Failed to respond to meeting", "error");
-      }
-  }
-
-  async function quickSchedule() {
-      const select = document.getElementById('scheduleScholarSelect');
-      const title  = document.getElementById('scheduleTitle').value;
-      const dt     = document.getElementById('scheduleDateTime').value;
-      
-      if (!select.value || !title || !dt) {
-          alert("Please fill all fields for scheduling.");
-          return;
-      }
-
-      const scholarId = select.value;
-      const receiverId = select.options[select.selectedIndex].getAttribute('data-uid');
-      const svId = await resolveSupervisorId();
-
-      try {
-          await apiPost('/meetings/', {
-              scholar_id: scholarId,
-              supervisor_id: svId,
-              receiver_user_id: receiverId,
-              title: title,
-              scheduled_at: dt,
-              sender_role: 'supervisor'
-          });
-          toast("Mandatory meeting scheduled!", "success");
-          
-          // Clear inputs
-          document.getElementById('scheduleTitle').value = '';
-          document.getElementById('scheduleDateTime').value = '';
-          loadSideMeetings();
-      } catch(e) {
-          alert("Failed to schedule meeting. Check your inputs.");
-      }
   }
 
   function filterScholars(f, btn) {
@@ -496,17 +364,6 @@
     }).join('');
   }
 
-  // BOOTSTRAP
-  const user = requireAuth('faculty');
-  let ALL_SCHOLARS = [];
-  let currentFilter = 'all';
-  let searchVal = '';
-
-  async function init() {
-      renderSidebar('sup-scholars.html');
-      await loadScholars();
-  }
-  init();
 </script>
 </body>
 </html>
