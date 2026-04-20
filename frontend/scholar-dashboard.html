@@ -25,12 +25,10 @@
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start;">
-                    
-                    <!-- LEFT COLUMN -->
+                    <!-- FULL WIDTH DASHBOARD CONTENT -->
                     <div class="dash-main-col">
                         <!-- STATS GRID -->
-                        <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 2rem;">
+                        <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 2rem;">
                             <div class="card-stat">
                                 <div class="cs-icon" style="background: rgba(0, 242, 255, 0.1); color: var(--primary);"><i class="fas fa-chart-pie"></i></div>
                                 <div class="cs-val" id="overallProgress">0%</div>
@@ -42,6 +40,12 @@
                                 <div class="cs-val" id="milestonesCount">0/0</div>
                                 <div class="cs-label">Milestones</div>
                                 <div class="cs-tag orange">Upcoming</div>
+                            </div>
+                            <div class="card-stat">
+                                <div class="cs-icon" style="background: rgba(34, 197, 94, 0.1); color: #22c55e;"><i class="fas fa-book"></i></div>
+                                <div class="cs-val" id="publicationsCount">0</div>
+                                <div class="cs-label">Publications</div>
+                                <div class="cs-tag green">Activity</div>
                             </div>
                             <div class="card-stat">
                                 <div class="cs-icon" style="background: rgba(139, 92, 246, 0.1); color: #a78bfa;"><i class="fas fa-calendar-check"></i></div>
@@ -84,42 +88,10 @@
                         <!-- RECENT Activity -->
                         <div class="panel" style="background: #0b0c10; border: 1px solid rgba(255,255,255,0.03);">
                             <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                                <h3 style="font-size: 1rem; font-weight: 600;">Recent Activity</h3>
+                                <h3 style="font-size: 1rem; font-weight: 600;">Recent Activity Log</h3>
                                 <i class="fas fa-history" style="opacity: 0.4;"></i>
                             </div>
                             <div id="activityLog" style="display:flex; flex-direction:column; gap:0.75rem;"></div>
-                        </div>
-                    </div>
-
-                    <!-- RIGHT COLUMN: SCHEDULING & MEETINGS -->
-                    <div class="dash-side-col">
-                        <!-- Scheduling Panel -->
-                        <div class="panel" style="margin-bottom: 1.5rem; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; position: sticky; top: 20px;">
-                            <h3 style="margin-top: 0; font-size: 1rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem;">
-                                <i class="fas fa-calendar-plus" style="color: var(--primary);"></i> Request Meeting
-                            </h3>
-                            
-                            <div class="input-group" style="margin-bottom: 1.25rem;">
-                                <label style="display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.5rem;">Title / Purpose</label>
-                                <input type="text" id="meetTitle" placeholder="e.g. Thesis Review" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); border-radius: 8px; color: #fff; padding: 0.7rem; font-size: 0.85rem; outline: none;">
-                            </div>
-
-                            <div class="input-group" style="margin-bottom: 1.5rem;">
-                                <label style="display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.5rem;">Date & Time</label>
-                                <input type="datetime-local" id="meetDate" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); border-radius: 8px; color: #fff; padding: 0.7rem; font-size: 0.85rem; outline: none; color-scheme: dark;">
-                            </div>
-
-                            <button onclick="scheduleMeeting()" style="width: 100%; padding: 0.9rem; background: var(--primary); color: #000; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                                <i class="fas fa-paper-plane"></i> Send Request
-                            </button>
-
-                            <!-- Mini Upcoming List -->
-                            <div style="margin-top: 2rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem;">
-                                <h4 style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem; text-transform: uppercase;">Meeting History</h4>
-                                <div id="meetingsList" style="display: flex; flex-direction: column; gap: 0.85rem; max-height: 280px; overflow-y: auto; padding-right: 5px;">
-                                    <div style="font-size: 0.75rem; color: var(--text-muted); opacity: 0.6; text-align: center;">No history yet</div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -243,41 +215,39 @@
                 document.getElementById('publicationsCount').textContent = pubs.length;
                 document.querySelector('.cs-tag.green').textContent = `${underReview} under review`;
 
-                // Meetings History
-                try {
-                    const mRaw = await apiGet(`/meetings/scholar/${scholar.id}`);
-                    const list = document.getElementById('meetingsList');
-                    
-                    // Sort DESC (Newest first)
-                    const meetings = mRaw.sort((a,b) => new Date(b.scheduled_at) - new Date(a.scheduled_at));
-                    
-                    if (meetings.length > 0) {
-                        list.style.opacity = '1';
-                        list.style.alignItems = 'stretch';
-                        list.style.justifyContent = 'flex-start';
-                        list.innerHTML = meetings.map(m => {
-                            const sColor = m.status === 'scheduled' ? 'var(--primary)' : m.status === 'completed' ? '#22c55e' : '#94a3b8';
-                            return `
-                                <div style="padding:0.65rem; background:rgba(255,255,255,0.03); border-radius:10px; border:1px solid var(--glass-border)">
-                                    <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:0.2rem">
-                                        <div style="font-size:0.75rem; font-weight:600; color:#fff">${m.title}</div>
-                                        <span style="font-size:0.55rem; text-transform:uppercase; color:${sColor}; font-weight:700; border:1px solid ${sColor}33; padding:1px 4px; border-radius:4px">${m.status}</span>
+                // Meetings History (Only if list exists)
+                const list = document.getElementById('meetingsList');
+                if (list) {
+                    try {
+                        const mRaw = await apiGet(`/meetings/scholar/${scholar.id}`);
+                        const meetings = mRaw.sort((a,b) => new Date(b.scheduled_at) - new Date(a.scheduled_at));
+                        
+                        if (meetings.length > 0) {
+                            list.style.opacity = '1';
+                            list.innerHTML = meetings.map(m => {
+                                const sColor = m.status === 'scheduled' ? 'var(--primary)' : m.status === 'completed' ? '#22c55e' : '#94a3b8';
+                                return `
+                                    <div style="padding:0.65rem; background:rgba(255,255,255,0.03); border-radius:10px; border:1px solid var(--glass-border)">
+                                        <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:0.2rem">
+                                            <div style="font-size:0.75rem; font-weight:600; color:#fff">${m.title}</div>
+                                            <span style="font-size:0.55rem; text-transform:uppercase; color:${sColor}; font-weight:700; border:1px solid ${sColor}33; padding:1px 4px; border-radius:4px">${m.status}</span>
+                                        </div>
+                                        <div style="font-size:0.6rem; color:var(--text-muted); opacity:0.8">
+                                            <i class="fas fa-calendar-day" style="margin-right:0.2rem"></i> ${new Date(m.scheduled_at).toLocaleDateString('en-IN', {day:'numeric', month:'short'})} &middot; ${new Date(m.scheduled_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+                                        </div>
                                     </div>
-                                    <div style="font-size:0.6rem; color:var(--text-muted); opacity:0.8">
-                                        <i class="fas fa-calendar-day" style="margin-right:0.2rem"></i> ${new Date(m.scheduled_at).toLocaleDateString('en-IN', {day:'numeric', month:'short'})} · ${new Date(m.scheduled_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
-                                    </div>
-                                </div>
-                            `;
-                        }).join('');
-                    }
-                } catch(e) { console.error('Meetings error:', e); }
+                                `;
+                            }).join('');
+                        }
+                    } catch(e) { console.error('Meetings error:', e); }
+                }
 
                 // Activity Log
                 try {
                     const notifs = await apiGet(`/notifications/${user.id}`);
                     const items = notifs.notifications || [];
                     const al = document.getElementById('activityLog');
-                    if (items.length) {
+                    if (items.length && al) {
                         al.style.opacity = '1';
                         al.style.alignItems = 'stretch';
                         al.style.justifyContent = 'flex-start';
@@ -293,33 +263,8 @@
                             </div>`).join('');
                     }
                 } catch(e) {}
-
             } catch(e) { console.error(e); }
         }
-    async function scheduleMeeting() {
-        const title = document.getElementById('meetTitle').value;
-        const dt    = document.getElementById('meetDate').value;
-        if (!title || !dt) return;
-        
-        try {
-            const scholar = await apiGet(`/scholar/${user.scholar_id}`);
-            await apiPost('/meetings/', {
-                scholar_id: scholar.id,
-                supervisor_id: scholar.supervisor_id,
-                receiver_user_id: scholar.supervisor_user_id,
-                title: title,
-                scheduled_at: dt.replace(' ', 'T'),
-                sender_role: 'scholar'
-            });
-            alert("Meeting request sent to your supervisor for approval!");
-            document.getElementById('meetTitle').value = '';
-            document.getElementById('meetDate').value = '';
-            loadData();
-        } catch(e) { 
-            console.error(e);
-            alert("Failed to send request."); 
-        }
-    }
 
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
