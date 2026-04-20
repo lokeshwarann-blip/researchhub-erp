@@ -668,7 +668,7 @@ select:focus option {
 .header-row p { color: var(--text-muted); }
 
 /* ─── STAT CARDS ─── */
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.55rem; margin-bottom: 2.5rem; }
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.55rem; margin-bottom: 2.5rem; }
 .card-stat { 
     background: var(--surface); border: 1px solid var(--border); border-radius: 20px; 
     padding: 1.5rem; position: relative; overflow: hidden;
