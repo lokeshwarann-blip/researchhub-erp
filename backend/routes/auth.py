@@ -216,7 +216,7 @@ def get_user_profile(user_id):
                 'department': s.department,
                 'phone': s.phone,
                 'gender': s.gender,
-                'research_focus': s.research_area or s.research_focus if hasattr(s, 'research_area') else getattr(s, 'research_focus', ''),
+                'research_focus': s.research_area or '', 
                 'supervisor_name': sup_name,
                 'attendance': {
                     'percentage': att_pct,

@@ -63,6 +63,7 @@ with app.app_context():
         db.session.add(admin)
         
         # 2. SUPERVISORS
+        supervisors = []
         su_data = [
             ('Sarah', 'Johnson', 'sarah@uni.edu', 'Professor', 'CS'),
             ('James', 'Miller', 'james@uni.edu', 'Asst. Professor', 'IT')
@@ -73,17 +74,19 @@ with app.app_context():
             db.session.flush()
             s = Supervisor(user_id=u.id, first_name=f, last_name=l, department=dept, designation=d, university='Anna University')
             db.session.add(s)
+            db.session.flush()
+            supervisors.append(s)
 
         # 3. SCHOLARS
         sc_data = [
-            ('Elena', 'Vance', 'elena@uni.edu', 'RH2024001', 'CS'),
-            ('Marcus', 'Fenix', 'marcus@uni.edu', 'RH2024002', 'IT')
+            ('Elena', 'Vance', 'elena@uni.edu', 'RH2024001', 'CS', supervisors[0].id),
+            ('Marcus', 'Fenix', 'marcus@uni.edu', 'RH2024002', 'IT', supervisors[1].id)
         ]
-        for f, l, e, en, dept in sc_data:
+        for f, l, e, en, dept, sid in sc_data:
             u = User(email=e, password_hash=generate_password_hash('Admin@123'), role='scholar', status='Active')
             db.session.add(u)
             db.session.flush()
-            s = Scholar(user_id=u.id, first_name=f, last_name=l, enrollment_id=en, department=dept, enroll_year=2024, university='Anna University')
+            s = Scholar(user_id=u.id, first_name=f, last_name=l, enrollment_id=en, department=dept, enroll_year=2024, university='Anna University', supervisor_id=sid)
             db.session.add(s)
 
         db.session.commit()
