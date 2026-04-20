@@ -46,7 +46,8 @@ def get_attendance(scholar_id):
         monthly_trend.append({
             'label': m_name,
             'present': sum(1 for r in m_recs if r.status == 'present'),
-            'absent': sum(1 for r in m_recs if r.status == 'absent')
+            'absent': sum(1 for r in m_recs if r.status == 'absent'),
+            'leave': sum(1 for r in m_recs if r.status == 'leave')
         })
 
     return jsonify({

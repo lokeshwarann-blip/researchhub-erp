@@ -255,13 +255,15 @@ function renderCharts(overall, monthly) {
     const labels = monthly.length ? monthly.map(m => m.label) : ['Jan', 'Feb', 'Mar', 'Apr'];
     const pData  = monthly.length ? monthly.map(m => m.present) : [20, 18, 22, 19];
     const aData  = monthly.length ? monthly.map(m => m.absent) : [2, 3, 1, 2];
+    const lData  = monthly.length ? monthly.map(m => m.leave || 0) : [1, 2, 0, 1];
     charts.trend = new Chart(document.getElementById('trendChart'), {
         type: 'bar',
         data: {
             labels,
             datasets: [
                 { label:'Present', data:pData, backgroundColor:'#22c55e', borderRadius:4 },
-                { label:'Absent',  data:aData, backgroundColor:'#ef4444', borderRadius:4 }
+                { label:'Absent',  data:aData, backgroundColor:'#ef4444', borderRadius:4 },
+                { label:'Leave',   data:lData, backgroundColor:'#f59e0b', borderRadius:4 }
             ]
         },
         options: {

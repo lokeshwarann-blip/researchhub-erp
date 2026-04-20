@@ -7,7 +7,6 @@ from routes.supervisor import supervisor_bp
 from routes.milestones import milestones_bp
 from routes.documents import documents_bp
 from routes.publications import publications_bp
-from routes.stipend import stipend_bp
 from routes.leave import leave_bp
 from routes.messages import messages_bp
 from routes.meetings import meetings_bp
@@ -43,7 +42,6 @@ app.register_blueprint(supervisor_bp,   url_prefix='/api/supervisor')
 app.register_blueprint(milestones_bp,   url_prefix='/api/milestones')
 app.register_blueprint(documents_bp,    url_prefix='/api/documents')
 app.register_blueprint(publications_bp, url_prefix='/api/publications')
-app.register_blueprint(stipend_bp,      url_prefix='/api/stipend')
 app.register_blueprint(leave_bp,        url_prefix='/api/leave')
 app.register_blueprint(messages_bp,     url_prefix='/api/messages')
 app.register_blueprint(meetings_bp,     url_prefix='/api/meetings')
