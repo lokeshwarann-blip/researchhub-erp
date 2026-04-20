@@ -215,31 +215,43 @@
 
   async function loadScholarMeetings(scholarId) {
       const statsPanel = document.getElementById('statsPanel');
+      console.log("Loading meetings for scholar:", scholarId);
+      
+      // Inject skeleton/header first so user knows it's added
+      const containerId = `meetings-container-${scholarId}`;
+      statsPanel.insertAdjacentHTML('beforeend', `
+        <div class="stat-box" id="${containerId}" style="text-align:left">
+            <div class="stat-title"><i class="fas fa-calendar-alt"></i> Requested Meetings</div>
+            <div id="meetingListContent" style="display:flex; flex-direction:column; gap:0.75rem; margin-top:0.5rem">
+                <div style="font-size:0.75rem; color:var(--text-muted); opacity:0.6">Checking for meetings...</div>
+            </div>
+        </div>
+      `);
+
       try {
           const meetings = await apiGet(`/meetings/scholar/${scholarId}`);
           const upcoming = meetings.filter(m => m.status === 'scheduled');
+          const listContent = document.getElementById('meetingListContent');
           
           if (upcoming.length > 0) {
-              const meetingsHtml = `
-                <div class="stat-box" style="text-align:left">
-                    <div class="stat-title"><i class="fas fa-calendar-alt"></i> Requested Meetings</div>
-                    <div style="display:flex; flex-direction:column; gap:0.75rem; margin-top:0.5rem">
-                        ${upcoming.map(m => {
-                            const date = new Date(m.scheduled_at);
-                            return `
-                            <div style="padding:0.75rem; background:rgba(255,255,255,0.03); border-radius:10px; border:1px solid var(--glass-border)">
-                                <div style="font-size:0.85rem; font-weight:600; color:#fff; margin-bottom:0.2rem">${m.title}</div>
-                                <div style="font-size:0.72rem; color:var(--text-muted)">
-                                    <i class="fas fa-clock" style="margin-right:0.3rem"></i> ${date.toLocaleDateString('en-IN', {day:'numeric', month:'short'})} · ${date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
-                                </div>
-                            </div>`;
-                        }).join('')}
-                    </div>
-                </div>
-              `;
-              statsPanel.insertAdjacentHTML('beforeend', meetingsHtml);
+              listContent.innerHTML = upcoming.map(m => {
+                  const date = new Date(m.scheduled_at);
+                  const dateStr = isNaN(date.getTime()) ? m.scheduled_at : date.toLocaleDateString('en-IN', {day:'numeric', month:'short'}) + ' · ' + date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+                  return `
+                  <div style="padding:0.75rem; background:rgba(255,255,255,0.03); border-radius:10px; border:1px solid var(--glass-border)">
+                      <div style="font-size:0.85rem; font-weight:600; color:#fff; margin-bottom:0.2rem">${m.title}</div>
+                      <div style="font-size:0.72rem; color:var(--text-muted)">
+                          <i class="fas fa-clock" style="margin-right:0.3rem"></i> ${dateStr}
+                      </div>
+                  </div>`;
+              }).join('');
+          } else {
+              listContent.innerHTML = `<div style="font-size:0.75rem; color:var(--text-muted); opacity:0.6">No meetings requested.</div>`;
           }
-      } catch(e) { console.error("Error loading meetings:", e); }
+      } catch(e) { 
+          console.error("Error loading meetings:", e);
+          document.getElementById('meetingListContent').innerHTML = `<div style="font-size:0.75rem; color:#ef4444">Failed to load meetings.</div>`;
+      }
   }
 
   function renderChart(att) {

@@ -71,7 +71,7 @@ def _serialize(m):
         'scholar_id'   : m.scholar_id,
         'supervisor_id': m.supervisor_id,
         'title'        : m.title,
-        'scheduled_at' : str(m.scheduled_at),
+        'scheduled_at' : m.scheduled_at.isoformat(),
         'notes'        : m.notes,
         'status'       : m.status,
         'created_at'   : str(m.created_at),

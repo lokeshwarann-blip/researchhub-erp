@@ -270,17 +270,27 @@ async function loadNotifications(userId, isInitial = false) {
 }
 
 function updateNotifBadge(count) {
-    ['notifBadge', 'notifBadgeTop', 'sidebarNotifBadge'].forEach(id => {
+    const ids = ['notifBadge', 'notifBadgeTop', 'sidebarNotifBadge'];
+    ids.forEach(id => {
         const b = document.getElementById(id);
         if (!b) return;
-        if (count > 0) { b.style.display = 'flex'; b.textContent = count > 99 ? '99+' : count; }
-        else           { b.style.display = 'none'; }
+        if (count > 0) {
+            b.style.display = 'flex';
+            b.textContent = count > 99 ? '99+' : count;
+            b.classList.add('pulse-notif');
+        } else {
+            b.style.display = 'none';
+        }
     });
 
     const chip = document.getElementById('notifModalCount');
     if (chip) {
-        if (count > 0) { chip.style.display = 'inline-flex'; chip.textContent = count > 99 ? '99+' : count; }
-        else           { chip.style.display = 'none'; }
+        if (count > 0) {
+            chip.style.display = 'inline-flex';
+            chip.textContent = count > 99 ? '99+' : count;
+        } else {
+            chip.style.display = 'none';
+        }
     }
 
     const footer = document.getElementById('notifModalFooterText');

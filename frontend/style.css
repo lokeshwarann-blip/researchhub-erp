@@ -903,6 +903,16 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     font-size: 0.95rem;
 }
 
+/* Notification Badge Pulse */
+.pulse-notif {
+    animation: alertPulse 2s infinite;
+}
+@keyframes alertPulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
 /* End of styles */
 
 /* ═══════════════════════════════════════════════════════
