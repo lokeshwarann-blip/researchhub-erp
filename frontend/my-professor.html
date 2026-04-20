@@ -77,10 +77,7 @@
                 <div id="requestContent"><div class="empty-state">Loading...</div></div>
             </div>
 
-            <!-- Request / Pending Status -->
-            <div id="requestSection" class="panel" style="margin-bottom:2rem; display:none">
-                <div class="panel-head"><h3>My Supervisor Requests</h3></div>
-                <div id="requestContent"><div class="empty-state">Loading...</div></div>
+                </div>
             </div>
         </div>
     </main>
@@ -262,7 +259,7 @@ async function loadRequests() {
                 </tr>`).join('')}
             </tbody>
         </table>`;
-    } catch(err) {
+    } catch(e) {
         cont.innerHTML = `<div class="empty-state">Failed to load requests</div>`;
     }
 }

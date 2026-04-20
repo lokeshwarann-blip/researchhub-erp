@@ -7,6 +7,7 @@
 const SCHOLAR_NAV = [
     { href: 'scholar-dashboard.html', icon: 'fa-chart-line',         label: 'Dashboard' },
     { href: 'my-professor.html',      icon: 'fa-chalkboard-teacher', label: 'My Professor' },
+    { href: 'directory.html',         icon: 'fa-address-book',       label: 'Faculty Directory' },
     { href: 'milestones.html',        icon: 'fa-tasks',              label: 'Milestones' },
     { href: 'publications.html',      icon: 'fa-book',               label: 'Publications' },
     { href: 'leaverequest.html',      icon: 'fa-calendar-alt',       label: 'Leave Request' },
