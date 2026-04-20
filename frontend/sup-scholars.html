@@ -346,28 +346,47 @@
       try {
           const svId = await resolveSupervisorId();
           const mRaw = await apiGet(`/meetings/supervisor/${svId}`);
+          if (!Array.isArray(mRaw)) return;
           
-          // Sort by date DESC (Newest first)
           const meetings = mRaw.sort((a,b) => new Date(b.scheduled_at) - new Date(a.scheduled_at));
 
           if (meetings.length > 0) {
               list.innerHTML = meetings.map(m => {
-                  const sColor = m.status === 'scheduled' ? 'var(--primary)' : m.status === 'completed' ? '#22c55e' : '#94a3b8';
+                  const sColor = m.status === 'scheduled' ? 'var(--primary)' : m.status === 'completed' ? '#22c55e' : (m.status === 'pending' ? '#f59e0b' : '#94a3b8');
+                  const isPending = m.status === 'pending';
+                  
                   return `
-                    <div style="padding:0.75rem; background:rgba(255,255,255,0.03); border-radius:10px; border:1px solid var(--glass-border)">
-                        <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:0.25rem">
-                            <div style="font-size:0.8rem; font-weight:600; color:#fff">${m.title}</div>
-                            <span style="font-size:0.6rem; text-transform:uppercase; color:${sColor}; font-weight:700; border:1px solid ${sColor}33; padding:1px 4px; border-radius:4px">${m.status}</span>
+                    <div style="padding:0.75rem; background:rgba(255,255,255,0.03); border-radius:12px; border:1px solid var(--glass-border); margin-bottom:0.5rem">
+                        <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:0.4rem">
+                            <div style="font-size:0.85rem; font-weight:700; color:#fff">${m.title}</div>
+                            <span style="font-size:0.6rem; text-transform:uppercase; color:${sColor}; font-weight:800; border:1px solid ${sColor}44; padding:2px 6px; border-radius:6px; background:${sColor}08">${m.status}</span>
                         </div>
-                        <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:0.15rem">w/ ${m.scholar_name || 'Scholar'}</div>
-                        <div style="font-size:0.65rem; color:var(--text-muted); opacity:0.7">
-                            <i class="fas fa-calendar-day" style="margin-right:0.25rem"></i> ${new Date(m.scheduled_at).toLocaleDateString('en-IN', {day:'numeric', month:'short'})} · ${new Date(m.scheduled_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+                        <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.4rem">w/ ${m.scholar_name || 'Scholar'}</div>
+                        <div style="display:flex; flex-wrap:wrap; gap:0.8rem; font-size:0.68rem; color:var(--text-muted); opacity:0.8; margin-bottom: ${isPending ? '0.85rem' : '0'}">
+                            <span><i class="fas fa-calendar-day" style="margin-right:0.3rem; color:var(--primary)"></i>${new Date(m.scheduled_at).toLocaleDateString('en-IN', {day:'numeric', month:'short'})}</span>
+                            <span><i class="fas fa-clock" style="margin-right:0.3rem; color:var(--primary)"></i>${new Date(m.scheduled_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>
                         </div>
+                        ${isPending ? `
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; margin-top:0.25rem">
+                            <button onclick="respondMeeting(${m.id}, 'accept')" style="padding:0.45rem; border-radius:8px; border:none; background:#22c55e; color:#fff; font-size:0.7rem; font-weight:700; cursor:pointer"><i class="fas fa-check"></i> Accept</button>
+                            <button onclick="respondMeeting(${m.id}, 'decline')" style="padding:0.45rem; border-radius:8px; border:1px solid #ef4444; background:transparent; color:#ef4444; font-size:0.7rem; font-weight:700; cursor:pointer"><i class="fas fa-times"></i> Decline</button>
+                        </div>
+                        ` : ''}
                     </div>
                   `;
               }).join('');
           }
       } catch(e) { console.error("Side meetings error:", e); }
+  }
+
+  async function respondMeeting(id, action) {
+      try {
+          await apiPut(`/meetings/${id}/respond`, { action });
+          toast(`Meeting ${action === 'accept' ? 'confirmed' : 'declined'}`);
+          loadSideMeetings();
+      } catch(e) {
+          toast("Failed to respond to meeting", "error");
+      }
   }
 
   async function quickSchedule() {
@@ -477,6 +496,17 @@
     }).join('');
   }
 
+  // BOOTSTRAP
+  const user = requireAuth('faculty');
+  let ALL_SCHOLARS = [];
+  let currentFilter = 'all';
+  let searchVal = '';
+
+  async function init() {
+      renderSidebar('sup-scholars.html');
+      await loadScholars();
+  }
+  init();
 </script>
 </body>
 </html>
